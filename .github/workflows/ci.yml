@@ -50,6 +50,8 @@ jobs:
           node-version: 20
       - run: npm ci
       - run: npm run build
+      - name: Install OpenCV (cv2)
+        run: pip3 install --quiet opencv-python-headless
       - name: Render QR (node + browser entries) and decode with OpenCV
         run: |
           node --input-type=module -e "
