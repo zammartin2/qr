@@ -9,6 +9,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # Guard: a release must not fail when the version was already published
+      # manually (e.g. 1.1.1), or when the version simply exists on npm.
+      - name: Check whether the version already exists on npm
+        id: npmcheck
+        run: |
+          VER="${GITHUB_REF_NAME#v}"
+          if npm view "@fab-orbita/qr@$VER" version >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::$VER is already published on npm — the publish step will be skipped."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -18,6 +32,9 @@ jobs:
       - run: npm run typecheck
       - run: npm run test:coverage
       - run: npm run build
-      - run: npm publish --access public
+
+      - name: Publish to npm
+        if: steps.npmcheck.outputs.exists == 'false'
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
