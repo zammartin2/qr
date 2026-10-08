@@ -1,0 +1,14 @@
+src/
+__tests__/
+scripts/
+benchmarks/
+.github/
+coverage/
+node_modules/
+tsconfig.json
+tsconfig.build.json
+tsup.config.ts
+vitest.config.ts
+eslint.config.mjs
+*.tgz
+*.log

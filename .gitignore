@@ -1,0 +1,10 @@
+node_modules/
+dist/
+coverage/
+*.tgz
+*.tsbuildinfo
+.DS_Store
+.idea/
+.vscode/
+*.log
+fab-qr-audit-clean.txt

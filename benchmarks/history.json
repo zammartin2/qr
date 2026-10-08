@@ -1,0 +1,163 @@
+[
+  {
+    "timestamp": "2026-10-08T00:36:59.835Z",
+    "node": "v22.23.3",
+    "iterations": 10000,
+    "url": {
+      "fabQrMs": 2235.1,
+      "qrcodeMs": 2259.6
+    },
+    "text": {
+      "fabQrMs": 4313.3,
+      "qrcodeMs": 4440.8
+    },
+    "digits": {
+      "fabQrMs": 2281.4,
+      "qrcodeMs": 2187.5
+    }
+  },
+  {
+    "timestamp": "2026-10-08T05:39:58.525Z",
+    "node": "v22.23.3",
+    "iterations": 10000,
+    "url": {
+      "fabQrMs": 2411.8,
+      "qrcodeMs": 2392.6
+    },
+    "text": {
+      "fabQrMs": 4166.8,
+      "qrcodeMs": 4660.6
+    },
+    "digits": {
+      "fabQrMs": 2335.5,
+      "qrcodeMs": 2195.2
+    }
+  },
+  {
+    "timestamp": "2026-10-08T09:52:53.854Z",
+    "node": "v22.23.3",
+    "iterations": 10000,
+    "url": {
+      "fabQrMs": 2447.4,
+      "qrcodeMs": 2387.6
+    },
+    "text": {
+      "fabQrMs": 4096.5,
+      "qrcodeMs": 4543.1
+    },
+    "digits": {
+      "fabQrMs": 2341.6,
+      "qrcodeMs": 2097.6
+    }
+  },
+  {
+    "timestamp": "2026-10-08T09:56:05.157Z",
+    "version": "1.1.0",
+    "commit": null,
+    "node": "v22.23.3",
+    "v8": "12.4.254.21-node.57",
+    "env": {
+      "os": "linux 6.8.0-138-generic x64",
+      "cpu": "Intel(R) Xeon(R) CPU E5-2699 v4 @ 2.20GHz"
+    },
+    "config": {
+      "iterations": 10000,
+      "warmup": 500,
+      "runs": 3
+    },
+    "url": {
+      "fabQrMs": 2449.3,
+      "qrcodeMs": 2490.5,
+      "ratio": 1.017,
+      "fabQrRange": [
+        2384.2,
+        2462
+      ],
+      "qrcodeRange": [
+        2426.8,
+        2515.1
+      ]
+    },
+    "text": {
+      "fabQrMs": 4014.1,
+      "qrcodeMs": 4552.2,
+      "ratio": 1.134,
+      "fabQrRange": [
+        3958.2,
+        4229.9
+      ],
+      "qrcodeRange": [
+        4444.5,
+        4601.5
+      ]
+    },
+    "digits": {
+      "fabQrMs": 2244.4,
+      "qrcodeMs": 2114.8,
+      "ratio": 0.942,
+      "fabQrRange": [
+        2221.3,
+        2407.5
+      ],
+      "qrcodeRange": [
+        2104.6,
+        2126.5
+      ]
+    }
+  },
+  {
+    "timestamp": "2026-10-08T09:58:09.706Z",
+    "version": "1.1.0",
+    "commit": null,
+    "node": "v22.23.3",
+    "v8": "12.4.254.21-node.57",
+    "env": {
+      "os": "linux 6.8.0-138-generic x64",
+      "cpu": "Intel(R) Xeon(R) CPU E5-2699 v4 @ 2.20GHz"
+    },
+    "config": {
+      "iterations": 10000,
+      "warmup": 500,
+      "runs": 3
+    },
+    "url": {
+      "fabQrMs": 2274.4,
+      "qrcodeMs": 2467.7,
+      "ratio": 1.085,
+      "fabQrRange": [
+        2256.4,
+        2363.3
+      ],
+      "qrcodeRange": [
+        2405.7,
+        2472.2
+      ]
+    },
+    "text": {
+      "fabQrMs": 4212.7,
+      "qrcodeMs": 4388.2,
+      "ratio": 1.042,
+      "fabQrRange": [
+        4044.6,
+        4223.9
+      ],
+      "qrcodeRange": [
+        4379.7,
+        4637.8
+      ]
+    },
+    "digits": {
+      "fabQrMs": 2237,
+      "qrcodeMs": 2122.7,
+      "ratio": 0.949,
+      "fabQrRange": [
+        2231.8,
+        2293.2
+      ],
+      "qrcodeRange": [
+        2079.3,
+        2290.3
+      ]
+    }
+  }
+]

@@ -1,0 +1,113 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node-version: [18, 20, 22]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test:coverage
+      - run: npm run build
+      - run: node scripts/analyze.mjs
+      - run: npm run test:bundle
+      - run: npm audit --omit=dev
+
+  bench:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run build
+      - run: node scripts/bench.mjs
+
+  decode:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run build
+      - name: Render QR (node + browser entries) and decode with OpenCV
+        run: |
+          node --input-type=module -e "
+          import { generateQR, qrToPNG } from './dist/index.node.js';
+          import { writeFileSync } from 'node:fs';
+          writeFileSync('/tmp/qr-node.png', qrToPNG(generateQR('https://example.com/тест')));
+          const { qrToPNG: pngBrowser } = await import('./dist/index.browser.js');
+          writeFileSync('/tmp/qr-browser.png', await pngBrowser(generateQR('https://example.com/тест')));
+          "
+          python3 -c "
+          import cv2
+          d = cv2.QRCodeDetector()
+          for path in ['/tmp/qr-node.png', '/tmp/qr-browser.png']:
+              text, *_ = d.detectAndDecode(cv2.imread(path))
+              assert text == 'https://example.com/тест', (path, text)
+              print('decoded OK:', path, text)
+          "
+
+  bun:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run build
+      # primary: require in -e (Bun supports it); fallback if this ever fails:
+      #   bun -e "const m = await import('./dist/index.node.cjs'); ..."
+      - name: Bun smoke (sync Buffer contract)
+        run: >
+          bun -e "const {generateQR,qrToPNG}=require('./dist/index.node.cjs');
+          if(!Buffer.isBuffer(qrToPNG(generateQR('test')))) process.exit(1);
+          console.log('bun ok')"
+
+  deno:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.x
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run build
+      # deno eval with an inline file:// import is unreliable — use a temp file.
+      - name: Deno smoke (node entry)
+        run: |
+          cat > /tmp/deno-smoke.ts <<EOF
+          import { generateQR, qrToPNG } from 'file://$PWD/dist/index.node.js';
+          console.log('Buffer global:', typeof Buffer);
+          const qr = generateQR('test');
+          const png = qrToPNG(qr);
+          console.log('version:', qr.version, 'png bytes:', png.length);
+          EOF
+          deno run --allow-read /tmp/deno-smoke.ts
