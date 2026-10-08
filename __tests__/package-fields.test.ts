@@ -30,15 +30,27 @@ describe('package.json fields (legacy bundlers)', () => {
     expect(pkg.types).toBe('./dist/index.d.ts');
   });
 
-  it('is version 1.1.0 with docs in the published files', () => {
-    expect(pkg.version).toBe('1.1.0');
+  it('has a semver version and ships the expected files', () => {
+    // Version must be a valid semver, but the test does not pin a specific
+    // value — bumping the version must not require editing this test.
+    expect(pkg.version).toMatch(/^\d+\.\d+\.\d+(?:-[\w.]+)?$/);
+
     // dist is shipped via explicit globs — sourcemaps (*.map) are NOT shipped.
     expect(pkg.files.some((f) => f.startsWith('dist/'))).toBe(true);
     expect(pkg.files.some((f) => f.endsWith('.map'))).toBe(false);
+
+    // Docs and top-level files that must be in the tarball.
     expect(pkg.files).toContain('docs');
+    expect(pkg.files).toContain('README.md');
+    expect(pkg.files).toContain('README.ru.md');
+    expect(pkg.files).toContain('LICENSE');
+    expect(pkg.files).toContain('CHANGELOG.md');
+
+    // Nothing that should stay out of the tarball.
     expect(pkg.files).not.toContain('src');
     expect(pkg.files).not.toContain('__tests__');
     expect(pkg.files).not.toContain('scripts');
+    expect(pkg.files).not.toContain('benchmarks');
   });
 });
 

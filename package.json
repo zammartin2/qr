@@ -1,6 +1,6 @@
 {
   "name": "@fab-orbita/qr",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Zero-dependency QR code generator (ISO/IEC 18004) for Node.js, browsers and edge runtimes",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -62,15 +62,16 @@
     "./package.json": "./package.json"
   },
   "files": [
-    "dist/**/*.js",
-    "dist/**/*.cjs",
-    "dist/**/*.d.ts",
-    "dist/**/*.d.cts",
-    "docs",
-    "README.md",
-    "LICENSE",
-    "CHANGELOG.md"
-  ],
+  "dist/**/*.js",
+  "dist/**/*.cjs",
+  "dist/**/*.d.ts",
+  "dist/**/*.d.cts",
+  "docs",
+  "README.md",
+  "README.ru.md",
+  "LICENSE",
+  "CHANGELOG.md"
+ ],
   "scripts": {
     "build": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\" && tsup",
     "dev": "tsup --watch",
